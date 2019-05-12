@@ -1,0 +1,27 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Bamazon",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronwab/bamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ronwab/bamazon/issues"
+  },
+  "homepage": "https://github.com/ronwab/bamazon#readme",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "dotenv": "^8.0.0",
+    "inquirer": "^6.3.1",
+    "mocha": "^6.1.4",
+    "mysql": "^2.17.1"
+  }
+}
