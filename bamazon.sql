@@ -14,45 +14,48 @@ CREATE TABLE products
     price INT
     (10),
     stock_quantity INT
-    (10)
+    (10),
+    product_sales INT
 
 );
+
+
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Rogue", "Nissan", 20000, 20);
+    VALUES("Rogue", "Nissan", 4500, 10);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Camry", "Toyota", 20000, 20);
+    VALUES("Camry", "Toyota", 6000, 30);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Edge", "Ford", 20000, 20);
+    VALUES("Edge", "Ford", 87000, 70);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("F-150", "Ford", 20000, 20);
+    VALUES("F-150", "Ford", 13000, 22);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Altima", "Nissan", 20000, 20);
+    VALUES("Altima", "Nissan",4300, 65);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("RAV4", "Toyota", 20000, 20);
+    VALUES("RAV4", "Toyota", 89000, 1);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Highlander", "Toyota", 20000, 20);
+    VALUES("Highlander", "Toyota", 67000, 0);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("X5", "BMW", 20000, 20);
+    VALUES("X5", "BMW", 34000, 32);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("MPV", "Mazda", 20000, 20);
+    VALUES("MPV", "Mazda", 80000, 12);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Prius", "Toyota", 20000, 20);
+    VALUES("Prius", "Toyota", 10000, 4);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Tacoma", "Toyota", 20000, 20);
+    VALUES("Tacoma", "Toyota", 240000, 9);
     INSERT INTO products
         (product_name, department_name,price,stock_quantity)
-    VALUES("Cube", "Nissan", 20000, 20);
+    VALUES("Cube", "Nissan", 6000, 7);
 
 
     CREATE TABLE departments
@@ -67,8 +70,3 @@ over_head_costs INT
 
 
 
--- 2. Modify the products table so that there's 
--- a product_sales column, and modify your `bamazonCustomer.js` app so that when a customer purchases anything from the store,
---  the price of the product multiplied by the quantity purchased is added to the product's product_sales column.
-
---    * Make sure your app still updates the inventory listed in the `products` column.

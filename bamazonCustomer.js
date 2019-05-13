@@ -5,9 +5,8 @@ let inquirer = require('inquirer');
 let itemQty = 0
 let availqty = 0;
 let remainingStock = 0
-let NameId
-
-
+let itemfield = ''
+let price = 0
 
 var connection = mysql.createConnection({
     host: config.db_host,
@@ -22,7 +21,6 @@ connection.connect((err) => {
         return err;
     } else {
         showAllData();
-
     }
 })
 
@@ -32,6 +30,7 @@ function showAllData() {
             console.log(err);
             return;
         } else {
+
             data.forEach(items => {
                 console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
             })
@@ -71,8 +70,9 @@ function promptPurchase() {
                 }
             }
         ]).then((data) => {
-            console.log(data);
             itemQty = data.itemQty;
+            itemfield = data.NameId;
+
             checkQuantity(data.NameId)
         })
         .catch((err) => {
@@ -84,16 +84,17 @@ function promptPurchase() {
 
 function checkQuantity(id) {
 
-    connection.query('SELECT stock_quantity FROM  products WHERE ?', [{
+    connection.query('SELECT stock_quantity, price FROM  products WHERE ?', [{
         product_name: id
     }], (err, res) => {
         if (err) {
             console.log('Item not Found');
 
         } else {
-            console.log(`*****************${res}*************`);
+            console.log(res);
 
             availqty = res[0].stock_quantity;
+            price = res[0].price
             //console.log(res[0].stock_quantity); //How do I return this value?
             compareqty(availqty)
 
@@ -103,6 +104,7 @@ function checkQuantity(id) {
 
 }
 
+
 function compareqty(qty) {
     console.log(`Avail ${availqty}`);
     console.log(`order ${itemQty}`);
@@ -111,37 +113,47 @@ function compareqty(qty) {
         console.log('lets talk');
         remainingStock = availqty - itemQty;
 
-        connection.query("UPDATE products SET" + remainingStock + " WHERE " + fieldTOUpdate + "")
-        // completePurchase(remainingStock, NameId)
-
+        calcBill()
+        updateDB(remainingStock, itemfield)
+        return
     } else {
         console.log('Nope out of stock');
-
+        whatNext()
     }
 }
 
-function completePurchase(bal, fieldTOUpdate) {
+function calcBill(itemQty, price) {
+    console.log(`pesa ${price}`);
+    console.log(`pesa ${itemQty}`);
 
-    connection.query("UPDATE products SET" + bal + " WHERE " + fieldTOUpdate + "")
-    connection.query('UPDATE products SET ?  WHERE ?', [{
-            stock_quantity: bal
-        },
-        {
-            product_name: fieldTOUpdate
-        }
-    ], (err, data) => {
-        console.log(data);
 
-    })
 
+}
+
+function whatNext() {
+    inquirer
+        .prompt([{
+                type: 'confirm',
+                name: 'keepShoppin',
+                message: "Keep Shoppin ??"
+            }
+
+        ]).then((keepShoppin) => {
+            console.log(keepShoppin);
+            keepShoppin ? showAllData() : connection.end();
+
+        }).catch((err) => {
+            console.log(err);
+
+        })
+
+}
+
+function updateDB(bal, fieldTOUpdate) {
+    connection.query('UPDATE products SET stock_quantity =?   WHERE product_name=?', [bal, fieldTOUpdate])
     continueShoping()
 
 }
-// 8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
-//    * This means updating the SQL database to reflect the remaining quantity.
-//    * Once the update goes through, show the customer the total cost of their purchase.
-
-// - - -
 
 function continueShoping() {
     inquirer
@@ -152,8 +164,13 @@ function continueShoping() {
             }
 
         ]).then((shoppin) => {
-            console.log(data.continueshoppin);
-            shoppin ? showAllData() : connection.end();
+            console.log(shoppin.continueshoppin);
+            // shoppin ? showAllData() : connection.end();
+            if (shoppin) {
+                showAllData()
+            } else {
+                connection.end()
+            }
 
         }).catch((err) => {
             console.log(err);
@@ -169,4 +186,6 @@ function validateInput(arg1) {
 }
 
 showAllData()
-// connection.end();
+// connection.end(function (err) {
+//     // The connection is terminated now
+// });
