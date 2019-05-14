@@ -3,14 +3,7 @@ let inquirer = require('inquirer');
 let config = require('./config.js');
 let mysql = require('mysql');
 
-
-var connection = mysql.createConnection({
-    host: config.db_host,
-    user: config.db_user,
-    password: config.db_password,
-    port: config.db_port,
-    database: config.db_name
-})
+var connection = require('./connection').connection
 
 connection.connect((err) => {
     if (err) {
@@ -21,9 +14,7 @@ connection.connect((err) => {
     }
 })
 
-
 function start() {
-
     inquirer
         .prompt([{
             type: 'list',
@@ -75,14 +66,13 @@ function viewProducts() {
 
 }
 
-
 function viewILownventory() {
     connection.query('SELECT * FROM products WHERE stock_quantity <=5', (data, err) => {
         if (err) {
             console.log(err);
 
         } else {
-            if (data = []) { //figure out why this is not working
+            if (data.length ==0) { 
                 console.log('No low inventory items');
 
             } else {

@@ -8,14 +8,7 @@ let remainingStock = 0
 let itemfield = ''
 let price = 0;
 let totalbill = 0;
-
-var connection = mysql.createConnection({
-    host: config.db_host,
-    user: config.db_user,
-    password: config.db_password,
-    port: config.db_port,
-    database: config.db_name
-})
+var connection = require('./connection').connection;
 
 connection.connect((err) => {
     if (err) {
@@ -28,11 +21,12 @@ connection.connect((err) => {
 function showAllData() {
     connection.query('select * from products', (err, data) => {
         if (err) {
-            console.log(err);
-            return;
+
+            return err;
         } else {
             data.forEach(items => {
-                console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
+                // console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
+                return `ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`;
             })
         }
         promptPurchase()
@@ -46,7 +40,6 @@ function promptPurchase() {
                 message: "Enter Name of item you would like to purchase",
                 name: "NameId",
                 validate: function (NameId) {
-
                     let validaName = /^[a-zA-Z]/;
                     if (NameId.match(validaName)) {
                         return true;
@@ -86,23 +79,48 @@ function checkQuantity(id) {
     connection.query('SELECT stock_quantity, price FROM  products WHERE ?', [{
         product_name: id
     }], (err, res) => {
-        if (err) { //How do we handle invalid data?
+        if (err) {
             console.log(err);
-
         } else {
+            if (res.length == 0) {
+                console.log("NOT found ");
+                promptPurchase()
 
-            console.log(res);
+            } else {
+                console.log(res);
 
-            availqty = res[0].stock_quantity;
-            price = res[0].price
-            //console.log(res[0].stock_quantity); //How do I return this value?
-            compareqty(availqty)
+                availqty = res[0].stock_quantity;
+                price = res[0].price
+                //console.log(res[0].stock_quantity); //How do I return this value?
+                return compareqty(availqty)
+            }
 
         }
 
     })
 
+    // connection.query("", [], raiseIfError((res) => {
+    //     console.log(res);
+
+    //     availqty = res[0].stock_quantity;
+    //     price = res[0].price
+    //     //console.log(res[0].stock_quantity); //How do I return this value?
+    //     compareqty(availqty)
+
+    // }))
+
 };
+
+// func: (res) => void
+// function raiseIfError(func) {
+//     return function (err, res) {
+//         if (err) { //How do we handle invalid data?
+//             console.log(err);
+//             // throw new Error(`Database error: ${err}`)
+//         }
+//         func(res)
+//     }
+// }
 
 function compareqty(qty) {
     console.log(`Avail ${availqty}`);
@@ -114,7 +132,7 @@ function compareqty(qty) {
 
         calcBill(itemQty, price)
         // updateDB(remainingStock, itemfield)
-        return
+        // return
     } else {
         console.log('Nope out of stock');
         whatNext()
@@ -138,12 +156,12 @@ function calcBill(itemQty, price) {
     //     }
 
     // })
-
     connection.query('UPDATE products SET product_sales =? WHERE product_name =?', [totalbill, itemfield], (data, err) => {
         err ? console.log(err) : console.log('here');
 
-    })
+    });
 }
+
 function whatNext() {
     inquirer
         .prompt([{
@@ -197,8 +215,3 @@ function validateInput(arg1) {
         console.log('Enter Valid number');
     }
 }
-
-showAllData()
-// connection.end(function (err) {
-//     // The connection is terminated now
-// });
