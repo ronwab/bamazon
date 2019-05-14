@@ -21,41 +21,41 @@ CREATE TABLE products
 
 
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Rogue", "Nissan", 4500, 10);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Rogue", "Nissan", 20000, 10, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Camry", "Toyota", 6000, 30);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Camry", "Toyota", 6000, 30, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Edge", "Ford", 87000, 70);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Edge", "Ford", 87000, 70, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("F-150", "Ford", 13000, 22);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("F-150", "Ford", 13000, 22, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Altima", "Nissan",4300, 65);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Altima", "Nissan", 4300, 65, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("RAV4", "Toyota", 89000, 1);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("RAV4", "Toyota", 89000, 1, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Highlander", "Toyota", 67000, 0);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Highlander", "Toyota", 67000, 0, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("X5", "BMW", 34000, 32);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("X5", "BMW", 34000, 32, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("MPV", "Mazda", 80000, 12);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("MPV", "Mazda", 80000, 12, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Prius", "Toyota", 10000, 4);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Prius", "Toyota", 10000, 4, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Tacoma", "Toyota", 240000, 9);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Tacoma", "Toyota", 240000, 9, 0);
     INSERT INTO products
-        (product_name, department_name,price,stock_quantity)
-    VALUES("Cube", "Nissan", 6000, 7);
+        (product_name, department_name,price,stock_quantity,product_sales)
+    VALUES("Cube", "Nissan", 6000, 7, 0);
 
 
     CREATE TABLE departments

@@ -6,7 +6,8 @@ let itemQty = 0
 let availqty = 0;
 let remainingStock = 0
 let itemfield = ''
-let price = 0
+let price = 0;
+let totalbill = 0;
 
 var connection = mysql.createConnection({
     host: config.db_host,
@@ -30,7 +31,6 @@ function showAllData() {
             console.log(err);
             return;
         } else {
-
             data.forEach(items => {
                 console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
             })
@@ -38,7 +38,6 @@ function showAllData() {
         promptPurchase()
     });
 };
-
 
 function promptPurchase() {
     inquirer
@@ -71,7 +70,7 @@ function promptPurchase() {
             }
         ]).then((data) => {
             itemQty = data.itemQty;
-            itemfield = data.NameId;
+            itemfield = data.NameId.toLowerCase();
 
             checkQuantity(data.NameId)
         })
@@ -87,10 +86,11 @@ function checkQuantity(id) {
     connection.query('SELECT stock_quantity, price FROM  products WHERE ?', [{
         product_name: id
     }], (err, res) => {
-        if (err) {
-            console.log('Item not Found');
+        if (err) { //How do we handle invalid data?
+            console.log(err);
 
         } else {
+
             console.log(res);
 
             availqty = res[0].stock_quantity;
@@ -102,8 +102,7 @@ function checkQuantity(id) {
 
     })
 
-}
-
+};
 
 function compareqty(qty) {
     console.log(`Avail ${availqty}`);
@@ -113,8 +112,8 @@ function compareqty(qty) {
         console.log('lets talk');
         remainingStock = availqty - itemQty;
 
-        calcBill()
-        updateDB(remainingStock, itemfield)
+        calcBill(itemQty, price)
+        // updateDB(remainingStock, itemfield)
         return
     } else {
         console.log('Nope out of stock');
@@ -123,13 +122,28 @@ function compareqty(qty) {
 }
 
 function calcBill(itemQty, price) {
-    console.log(`pesa ${price}`);
-    console.log(`pesa ${itemQty}`);
 
+    totalbill += price * itemQty // Need to increment this total
+    console.log(`Total bill = ${totalbill}`);
+    // connection.query('SELECT * FROM products', (data, err) => { Why wont this work?
+    //     if (err) {
+    //         console.log(err);
 
+    //     } else {
+    //         console.log("ere");
+    //         data.forEach(itemz => {
+    //             console.log(itemz.RowDataPacket.item_id);
 
+    //         })
+    //     }
+
+    // })
+
+    connection.query('UPDATE products SET product_sales =? WHERE product_name =?', [totalbill, itemfield], (data, err) => {
+        err ? console.log(err) : console.log('here');
+
+    })
 }
-
 function whatNext() {
     inquirer
         .prompt([{
@@ -146,7 +160,6 @@ function whatNext() {
             console.log(err);
 
         })
-
 }
 
 function updateDB(bal, fieldTOUpdate) {
