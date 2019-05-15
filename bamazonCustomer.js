@@ -11,6 +11,7 @@ let totalbill = 0;
 var connection = require('./connection').connection;
 
 connection.connect((err) => {
+    //err ? err : showAllData()
     if (err) {
         return err;
     } else {
@@ -196,16 +197,10 @@ function continueShoping() {
 
         ]).then((shoppin) => {
             console.log(shoppin.continueshoppin);
-            // shoppin ? showAllData() : connection.end();
-            if (shoppin) {
-                showAllData()
-            } else {
-                connection.end()
-            }
+            shoppin ? showAllData() : connection.end();
 
         }).catch((err) => {
             console.log(err);
-
         })
 
 }

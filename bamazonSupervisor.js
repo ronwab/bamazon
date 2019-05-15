@@ -3,8 +3,10 @@ let config = require('./config')
 let inquirer = require('inquirer');
 let mysql = require('mysql');
 var connection = require('./connection').connection //is this correct?
+
+
 // connection.connect() {   //why wont this work?
-//     err ? return err : start()
+//     err ? return err : promptSupervisor()
 // }
 
 connection.connect((err) => {
