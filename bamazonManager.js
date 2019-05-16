@@ -72,7 +72,7 @@ function viewILownventory() {
             console.log(err);
 
         } else {
-            if (data.length ==0) { 
+            if (data.length == 0) {
                 console.log('No low inventory items');
 
             } else {
@@ -92,17 +92,24 @@ function addInventory() {
             message: 'select Product to update inventory',
             name: 'prodname'
         }]).then((data) => {
+            console.log(data);
             ('SELECT * FROM products', (err, data) => {
-                inquirer
-                    .prompt([{
-                            name: 'inventoryUpdate',
-                            type: 'list',
-                            message: 'Select product to update inventory',
-                            choices: //figure this out
+                if (err) throw err;
+                console.log(data);
 
-                        }
+                // inquirer
+                //     .prompt([{
+                //             name: 'inventoryUpdate',
+                //             type: 'list',
+                //             message: 'Select product to update inventory',
+                //             choices: function(data){
+                //                 data.forEach(options => {
+                //                     options
+                //                 })
+                //             }
+                //         }
 
-                    ])
+                //     ])
             })
         })
         .catch((err) => {
@@ -117,7 +124,7 @@ function availprods() {
             console.log(err);
 
         } else {
-            if (data = []) { //figure out why this is not working
+            if (data.length == 0) {
                 console.log('No low inventory items');
 
             } else {

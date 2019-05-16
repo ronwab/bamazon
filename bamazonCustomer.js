@@ -10,14 +10,14 @@ let price = 0;
 let totalbill = 0;
 var connection = require('./connection').connection;
 
+
 connection.connect((err) => {
-    //err ? err : showAllData()
-    if (err) {
-        return err;
-    } else {
-        showAllData();
-    }
+    if (err) throw err
+
+    showAllData();
+
 })
+
 
 function showAllData() {
     connection.query('select * from products', (err, data) => {
@@ -25,10 +25,17 @@ function showAllData() {
 
             return err;
         } else {
-            data.forEach(items => {
-                // console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
-                return `ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`;
-            })
+            if (data.length == 0) {
+                console.log('Either table is empty or does not exist');
+
+                return;
+            } else {
+                data.forEach(items => {
+                    console.log(`ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`);
+                    // return `ITEM: ${items.product_name} PRICE: ${items.price} STOCK: ${items.stock_quantity}`;
+                })
+            }
+
         }
         promptPurchase()
     });
@@ -88,7 +95,7 @@ function checkQuantity(id) {
                 promptPurchase()
 
             } else {
-                console.log(res);
+                // console.log(res);
 
                 availqty = res[0].stock_quantity;
                 price = res[0].price
@@ -132,7 +139,7 @@ function compareqty(qty) {
         remainingStock = availqty - itemQty;
 
         calcBill(itemQty, price)
-        // updateDB(remainingStock, itemfield)
+        updateDB(remainingStock, itemfield)
         // return
     } else {
         console.log('Nope out of stock');
@@ -140,27 +147,26 @@ function compareqty(qty) {
     }
 }
 
-function calcBill(itemQty, price) {
+// function calcBill(itemQty, price) { Final fix
 
-    totalbill += price * itemQty // Need to increment this total
-    console.log(`Total bill = ${totalbill}`);
-    // connection.query('SELECT * FROM products', (data, err) => { Why wont this work?
-    //     if (err) {
-    //         console.log(err);
+//     totalbill += price * itemQty // Need to increment this total
+//     console.log(`Total bill = ${totalbill}`);
 
-    //     } else {
-    //         console.log("ere");
-    //         data.forEach(itemz => {
-    //             console.log(itemz.RowDataPacket.item_id);
+//     connection.query('SELECT * FROM products', (data, err) => {
+//         if (err) throw err
 
-    //         })
-    //     }
+//         data.forEach(itemz => {
+//             console.log(itemz.RowDataPacket.item_id);
 
-    // })
-    connection.query('UPDATE products SET product_sales =? WHERE product_name =?', [totalbill, itemfield], (data, err) => {
-        err ? console.log(err) : console.log('here');
+//         })
+//     })
 
-    });
+
+// connection.query('UPDATE products SET product_sales =? WHERE product_name =?', [totalbill, itemfield], (data, err) => {
+//     err ? console.log(err) : console.log('here');
+
+// });
+console.log('HAPA');
 }
 
 function whatNext() {
@@ -184,7 +190,6 @@ function whatNext() {
 function updateDB(bal, fieldTOUpdate) {
     connection.query('UPDATE products SET stock_quantity =?   WHERE product_name=?', [bal, fieldTOUpdate])
     continueShoping()
-
 }
 
 function continueShoping() {
@@ -203,10 +208,4 @@ function continueShoping() {
             console.log(err);
         })
 
-}
-
-function validateInput(arg1) {
-    if (arg1 === NaN) {
-        console.log('Enter Valid number');
-    }
 }
