@@ -9,9 +9,7 @@ describe('Test BamazonCustomer', () => {
         })
 
         it('should return a message if the table does not exist', () => {
-         
-            // let result = App.showAllData();
-            expect(result).to.eql()
+
         })
 
 
